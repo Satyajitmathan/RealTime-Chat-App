@@ -36,7 +36,7 @@ const SpeechToText = ({ text, setText }) => {
       setText(result);
       setTranscript(result);
 
-     e
+     
       lastResultTimeRef.current = currentTime;
     };
 
