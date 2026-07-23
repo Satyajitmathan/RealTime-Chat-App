@@ -1,6 +1,6 @@
 import { useChatStore } from "../store/useChatStore";
-import { useEffect, useRef } from "react";
-
+import { useEffect, useRef, useState } from "react";
+import { X } from "lucide-react";
 import ChatHeader from "./ChatHeader";
 import MessageInput from "./MessageInput";
 import MessageSkeleton from "./skeletons/MessageSkeleton";
@@ -18,7 +18,7 @@ const ChatContainer = () => {
   } = useChatStore();
   const { authUser } = useAuthStore();
   const messageEndRef = useRef(null);
-
+  const [selectedImage, setSelectedImage] = useState(null);
   useEffect(() => {
     getMessages(selectedUser._id);
 
@@ -73,18 +73,34 @@ const ChatContainer = () => {
             </div>
             <div className="chat-bubble flex flex-col">
               {message.image && (
-                <img
-                  src={message.image}
-                  alt="Attachment"
-                  className="sm:max-w-[200px] rounded-md mb-2"
-                />
+               <img
+                src={message.image}
+                alt="Attachment"
+                onClick={() => setSelectedImage(message.image)}
+                className="sm:max-w-[200px] rounded-md mb-2 cursor-zoom-in"
+              />
               )}
               {message.text && <p>{message.text}</p>}
             </div>
           </div>
         ))}
       </div>
+      {selectedImage && (
+          <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center">
+            <button
+              onClick={() => setSelectedImage(null)}
+              className="absolute top-5 right-5 btn btn-circle"
+            >
+              <X />
+            </button>
 
+            <img
+              src={selectedImage}
+              alt="Preview"
+              className="max-w-[90vw] max-h-[90vh] rounded-lg"
+            />
+          </div>
+        )}
       <MessageInput />
     </div>
   );
