@@ -30,7 +30,7 @@ useEffect(() => {
     ) : (
       <>
         <Sidebar />
-        <NoChatSelected />
+        {/* <NoChatSelected /> */}
       </>
     )
   ) : (
