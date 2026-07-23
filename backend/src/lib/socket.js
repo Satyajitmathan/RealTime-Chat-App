@@ -40,14 +40,17 @@ io.on("connection", (socket) => {
   io.emit("getOnlineUsers", Object.keys(userSocketMap));
 
   socket.on("disconnect", () => {
-    console.log("Disconnected:", socket.id);
+  console.log("Disconnected:", socket.id);
 
+  // Sirf tab delete karo jab ye current socket ho
+  if (userSocketMap[userId] === socket.id) {
     delete userSocketMap[userId];
+  }
 
-    console.log("After Disconnect:", userSocketMap);
+  console.log("After Disconnect:", userSocketMap);
 
-    io.emit("getOnlineUsers", Object.keys(userSocketMap));
-  });
+  io.emit("getOnlineUsers", Object.keys(userSocketMap));
+});
 });
 
 export { io, app, server };
