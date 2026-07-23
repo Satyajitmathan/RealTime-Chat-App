@@ -23,31 +23,24 @@ export function getReceiverSocketId(userId) {
 const userSocketMap = {}; // {userId: socketId}
 
 io.on("connection", (socket) => {
-  console.log("========== SOCKET CONNECT ==========");
-  console.log("Socket ID:", socket.id);
-  console.log("Query:", socket.handshake.query);
-
+  console.log("A user connected", socket.id);
   const userId = socket.handshake.query.userId;
-
-  console.log("User ID:", userId);
 
   if (userId) {
     userSocketMap[userId] = socket.id;
   }
 
-  console.log("Online Users Map:", userSocketMap);
 
   io.emit("getOnlineUsers", Object.keys(userSocketMap));
 
   socket.on("disconnect", () => {
-  console.log("Disconnected:", socket.id);
+  console.log("A user disconnected", socket.id);
 
-  // Sirf tab delete karo jab ye current socket ho
+ 
   if (userSocketMap[userId] === socket.id) {
     delete userSocketMap[userId];
   }
 
-  console.log("After Disconnect:", userSocketMap);
 
   io.emit("getOnlineUsers", Object.keys(userSocketMap));
 });
